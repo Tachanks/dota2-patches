@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patch 7.42 Core Tier List</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a field manual. Summary first, then one tier board per role, then items, then the patch reasoning behind it. */
+:root {
+  --bg: #f2f3f0;
+  --surface: #ffffff;
+  --ink: #16191d;
+  --muted: #5b6168;
+  --line: #d8dbd5;
+  --accent: #a3302a;
+  --s: #c4402a; --s-ink: #ffffff;
+  --a: #d9932a; --a-ink: #1c1406;
+  --b: #4a8a3a; --b-ink: #ffffff;
+  --c: #3c6f9a; --c-ink: #ffffff;
+  --x: #6f757d; --x-ink: #ffffff;
+  --up: #2d8540; --down: #b8352a; --steady: #687079; --rework: #7448ab;
+  --font-display: "Barlow Condensed", "Arial Narrow", "Roboto Condensed", sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111317; --surface: #1a1d22; --ink: #e6e8eb; --muted: #9ba2ab; --line: #2b3037; --accent: #e0675c;
+    --s: #e0553b; --s-ink: #ffffff;
+    --a: #e3a440; --a-ink: #1c1406;
+    --b: #64ad52; --b-ink: #0e1a0a;
+    --c: #5a92c4; --c-ink: #0b1622;
+    --x: #868d96; --x-ink: #111317;
+    --up: #5cc46f; --down: #ef6c60; --steady: #9ba2ab; --rework: #ad8ae3;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111317; --surface: #1a1d22; --ink: #e6e8eb; --muted: #9ba2ab; --line: #2b3037; --accent: #e0675c;
+  --s: #e0553b; --s-ink: #ffffff;
+  --a: #e3a440; --a-ink: #1c1406;
+  --b: #64ad52; --b-ink: #0e1a0a;
+  --c: #5a92c4; --c-ink: #0b1622;
+  --x: #868d96; --x-ink: #111317;
+  --up: #5cc46f; --down: #ef6c60; --steady: #9ba2ab; --rework: #ad8ae3;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+}
+a { color: var(--accent); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 20px; }
+
+header.top { padding: 36px 0 20px; border-bottom: 1px solid var(--line); }
+.kicker { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .08em; color: var(--accent); font-weight: 700; font-size: 15px; }
+h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(34px, 5vw, 54px); line-height: 1.02; margin: 6px 0 10px; text-wrap: balance; }
+.lede { max-width: 68ch; color: var(--muted); margin: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.chip { font-size: 13px; padding: 3px 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--muted); }
+
+nav.jump { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); }
+nav.jump .wrap { display: flex; gap: 6px; overflow-x: auto; padding-top: 8px; padding-bottom: 8px; }
+nav.jump a { white-space: nowrap; text-decoration: none; font-family: var(--font-display); font-weight: 600; font-size: 17px; letter-spacing: .03em; color: var(--ink); padding: 4px 10px; border-radius: 6px; }
+nav.jump a:hover { background: var(--surface); }
+
+section { padding: 34px 0 6px; scroll-margin-top: 52px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 32px; margin: 0 0 4px; text-wrap: balance; }
+h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; margin: 0 0 6px; letter-spacing: .01em; }
+.sub { color: var(--muted); margin: 0 0 18px; max-width: 72ch; }
+
+/* Short version */
+.short { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+.short .pt { background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 14px 16px; }
+.short .pt b { display: block; font-family: var(--font-display); font-size: 20px; font-weight: 700; margin-bottom: 2px; }
+.short .pt p { margin: 0; color: var(--ink); }
+
+.picks { margin-top: 14px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.pick { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 12px 16px; }
+.pick .role { font-family: var(--font-display); text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-size: 14px; font-weight: 600; }
+.pick .names { font-family: var(--font-display); font-weight: 700; font-size: 22px; line-height: 1.15; }
+
+/* Legend */
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 14px; color: var(--muted); margin: 0 0 18px; }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 1px 7px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
+.tag.up { color: var(--up); }
+.tag.down { color: var(--down); }
+.tag.steady { color: var(--steady); }
+.tag.rework { color: var(--rework); }
+
+/* Tier boards */
+.board { display: grid; gap: 10px; }
+.tier { display: grid; grid-template-columns: 62px 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+.tier .letter { display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; font-size: 38px; }
+.tier.S .letter { background: var(--s); color: var(--s-ink); }
+.tier.A .letter { background: var(--a); color: var(--a-ink); }
+.tier.B .letter { background: var(--b); color: var(--b-ink); }
+.tier.C .letter { background: var(--c); color: var(--c-ink); }
+.tier.X .letter { background: var(--x); color: var(--x-ink); font-size: 18px; text-transform: uppercase; writing-mode: vertical-rl; transform: rotate(180deg); letter-spacing: .1em; }
+.heroes { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 0; background: var(--surface); }
+.hero { background: var(--surface); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; }
+.hero .hd { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.hero .nm { font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.1; }
+.hero .base { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.hero p { margin: 0; font-size: 14.5px; line-height: 1.45; }
+
+.callout { margin-top: 14px; background: var(--surface); border: 1px dashed var(--rework); border-radius: 8px; padding: 12px 16px; font-size: 15px; }
+.callout b { color: var(--rework); }
+
+/* Items */
+.itemgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 14px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.panel h3 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.panel h3 small { font-family: var(--font-body); font-size: 13px; color: var(--muted); font-weight: 600; }
+.items { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.items li { padding-top: 10px; border-top: 1px solid var(--line); font-size: 14.5px; }
+.items li:first-child { border-top: 0; padding-top: 0; }
+.items .iname { font-weight: 700; }
+.items .cost { font-variant-numeric: tabular-nums; color: var(--muted); font-size: 13px; margin-left: 4px; }
+
+.pools { width: 100%; border-collapse: collapse; font-size: 14px; }
+.tablewrap { overflow-x: auto; }
+.pools th, .pools td { text-align: left; padding: 7px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+.pools th { font-family: var(--font-display); font-size: 16px; font-weight: 700; white-space: nowrap; }
+.pools td.hl { font-weight: 600; }
+
+/* Patch breakdown */
+.split { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 14px; }
+.sys { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; }
+.sys p { margin: 0 0 8px; max-width: 70ch; }
+.sys .num { font-variant-numeric: tabular-nums; }
+.sys .foryou { margin: 8px 0 0; padding: 8px 12px; border-left: 3px solid var(--accent); background: var(--bg); border-radius: 0 6px 6px 0; font-size: 15px; }
+.sys ul { margin: 0 0 8px; padding-left: 18px; }
+.sys li { margin-bottom: 3px; }
+
+.stat-table { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.stat-table th, .stat-table td { padding: 6px 8px; border-top: 1px solid var(--line); text-align: left; }
+.stat-table th { color: var(--muted); font-weight: 600; font-size: 13px; }
+.stat-table td.r, .stat-table th.r { text-align: right; }
+
+footer { padding: 30px 0 50px; color: var(--muted); font-size: 14px; }
+footer ul { padding-left: 18px; }
+
+@media (max-width: 520px) {
+  .tier { grid-template-columns: 44px 1fr; }
+  .tier .letter { font-size: 30px; }
+  .heroes { grid-template-columns: 1fr; }
+}
+
+/* Pos 1 builds */
+.buildgrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 500px), 1fr)); gap: 14px; }
+.build { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.build .bh { display: flex; align-items: center; gap: 10px; }
+.build .bh h3 { margin: 0; font-size: 24px; }
+.tierchip { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; font-family: var(--font-display); font-weight: 700; font-size: 18px; }
+.tierchip.S { background: var(--s); color: var(--s-ink); }
+.tierchip.A { background: var(--a); color: var(--a-ink); }
+.tierchip.B { background: var(--b); color: var(--b-ink); }
+.build .start { font-size: 14px; color: var(--muted); }
+.build .start b { color: var(--ink); }
+.path { border-top: 1px solid var(--line); padding-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+.path .plabel { font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: .02em; }
+.path.rec .plabel span { color: var(--up); }
+.path.alt .plabel span { color: var(--c); }
+.chain { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 0; align-items: center; }
+.chain li { display: inline-flex; align-items: center; font-size: 13.5px; font-weight: 600; }
+.chain li span { padding: 2px 8px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg); }
+.chain li + li::before { content: "\2192"; color: var(--muted); padding: 0 5px; font-weight: 400; }
+.path p { margin: 0; font-size: 14.5px; line-height: 1.45; }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <div class="kicker">Patch 7.41f to 7.42 · Core roles</div>
+    <h1>Patch 7.42 Core Tier List</h1>
+    <p class="lede">A day-one read of 7.42 for a position 1 player who flexes mid and offlane. The tiers start from where each hero stood at the end of 7.41f in high-MMR pubs, then move them up or down based on what the 7.42 notes actually changed. Real 7.42 win rates need a few days of games, so treat this as a starting plan and check the stats again by the weekend.</p>
+    <div class="chips">
+      <span class="chip">7.42 released Nov 18, 2026</span>
+      <span class="chip">7.41f baseline: Dota2ProTracker, 7000+ MMR, last 8 days</span>
+      <span class="chip">Focus: carry, mid, offlane</span>
+    </div>
+  </div>
+</header>
+
+<nav class="jump" aria-label="Sections">
+  <div class="wrap">
+    <a href="#short">Short version</a>
+    <a href="#carry">Pos 1</a>
+    <a href="#builds">Pos 1 builds</a>
+    <a href="#mid">Pos 2</a>
+    <a href="#off">Pos 3</a>
+    <a href="#items">Items</a>
+    <a href="#neutrals">Neutrals</a>
+    <a href="#patch">Patch breakdown</a>
+    <a href="#sources">Sources</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="short">
+  <h2>The short version</h2>
+  <p class="sub">Six things that change how you play core this patch, and the picks I would queue first.</p>
+  <div class="short">
+    <div class="pt"><p>Every hero gets +80 base HP, while most magic spells, spell amp items and cast range items got weaker. Lanes are harder to kill in, and carries who kill with attacks gain the most.</p></div>
+    <div class="pt"><p>A new Item Potency stat lets illusions apply most on-hit items at reduced strength, with Manta illusions at 35% and Chaos Knight's Phantasms at 100%. Builds for PL, CK, Spectre, Naga and TB all shift because of it.</p></div>
+    <div class="pt"><p>Eye of Skadi, Orb of Corrosion and Orb of Frost now pierce BKB, so your slow and heal cut stay on the enemy carry when he pops it. The same goes for theirs on you.</p></div>
+    <div class="pt"><p>Late-game farm comes slower because jungle bounties grow half as fast, passive gold no longer scales and melee waves stop growing at 30:00. Hitting your key item timings matters more than racing to six slots.</p></div>
+    <div class="pt"><p>Tormentor now spawns at 15:00, and every kill drops a horn that sends mega creeps down all three lanes, with a Shard guaranteed from the second kill. Have your first big item or a strong level timing ready for it.</p></div>
+    <div class="pt"><p>Javelin is gone and Quarterstaff is back, so MKB, Butterfly and Mask of Madness build from it now. Dragon Lance gives melee heroes +25 range and feeds into Abyssal Blade and Harpoon.</p></div>
+  </div>
+  <div class="picks">
+    <div class="pick"><div class="role">Pos 1 first picks</div><div class="names">Chaos Knight, Phantom Lancer, Sven</div></div>
+    <div class="pick"><div class="role">Pos 2 first picks</div><div class="names">Invoker, Outworld Destroyer</div></div>
+    <div class="pick"><div class="role">Pos 3 first picks</div><div class="names">Night Stalker, Dark Seer, Enigma</div></div>
+  </div>
+</section>
+
+<section id="carry">
+  <h2>Position 1</h2>
+  <p class="sub">Your main role, so this list is the deepest. Baselines are carry-role numbers from the last 8 days of 7.41f at 7000+ MMR, with D2PT's 0–100 rating where it had one. Builds for these heroes are in the next section.</p>
+  <div class="legend">
+    <span><span class="tag up">▲ Up</span> better than in 7.41f</span>
+    <span><span class="tag down">▼ Down</span> worse than in 7.41f</span>
+    <span><span class="tag steady">● Steady</span> small or offsetting changes</span>
+    <span><span class="tag rework">✦ Rework</span> needs testing before ranked</span>
+  </div>
+  <div class="board">
+    <div class="tier S"><div class="letter">S</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Chaos Knight</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 54.3% WR, 221 games</div><p>The biggest carry winner. His new innate, Ahead, Armageddon, lets him charge across the map with every Phantasm illusion in tow. Phantasms now have 100% Item Potency, so they apply your Desolator, Skadi and Basher at full strength, and the Shard Chaos Bolt illusion lost its damage penalty.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Phantom Lancer</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 50.9% WR · rated 83 · 57.6% contested</div><p>Agility gain dropped from 3.4 to 3.2 and the Juxtapose Shard cooldown went from 18s to 20s. His illusions can now apply Diffusal, Skadi, Corrosion and Desolator at 20%, which should outweigh the nerfs in a patch built around on-hit items. Expect him to be banned a lot.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Sven</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 52.1% WR · rated 84 (top carry)</div><p>Barely touched. Warcry costs a flat 45 mana and its level 10 talent dropped to +3.5s, while the Shard barrier went up to 350. He ended 7.41f as the top-rated carry, and weaker enemy magic plus cheaper Mask of Madness only help him.</p></div>
+    </div></div>
+
+    <div class="tier A"><div class="letter">A</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Spectre</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 52.8% WR · rated 57</div><p>Haunt illusions now have 40% Item Potency and Shadow Step 25%. A Skadi or Diffusal now does real work through Haunt. The only nerfs are three small talent trims.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Ursa</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 52.6% WR · rated 56</div><p>Earthshock damage rises from 75–225 to 80–260 and he is one of the fastest heroes at taking a 15:00 Tormentor. Abyssal now builds from Dragon Lance, which hands him +25 attack range.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Slark</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 52.4% WR · rated 69</div><p>Lost 2 base damage, and Pounce no longer stops movement spells on a target that is already debuff immune. Skadi and Corrosion piercing BKB and the new agility Abyssal make up for it.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Luna</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 50.7% WR · rated 70</div><p>Agility gain fell from 3.4 to 3.2. Moon Glaive bounces are now real attacks that carry on-hit effects, with potency dropping 40% each bounce, so Skadi and Corrosion spread through a creep wave or a fight. Lifesteal and crits still don't bounce.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Anti-Mage</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 50.3% WR · rated 68</div><p>Only talent changes, trading Mana Void upgrades for Mana Break and Counterspell ones. The extra base HP and weaker nukes help his lane. Slower jungle gold stretches his farm curve a little.</p></div>
+    </div></div>
+
+    <div class="tier B"><div class="letter">B</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Faceless Void</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 49.5% WR</div><p>Time Dilation's cooldown is now 24/21/18/15s (was 28/24/20/16), with faster ticks and more damage per stack, and the Shard attack speed swing nearly doubled to 17–20. A good pick when you want a tempo carry.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Naga Siren</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 48.0% WR, 298 games</div><p>Rip Tide armor reduction starts at 3.5 instead of 2, and her illusions can finally carry Diffusal, Skadi and Corrosion effects. Her level 15 talent now gives evasion per Naga, and the extra illusion talent moved from level 20 to 25.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Riki</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 54.3% WR, 692 games</div><p>Backstab now adds 10% Item Potency plus 10% per 15 levels, so Diffusal and Basher hit harder than normal from behind. Smoke Screen is shorter early with a higher miss chance.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Morphling</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 47.3% WR · rated 23</div><p>Better strength and intelligence gain and a new Aghanim's Scepter that recasts your unit-target spells on nearby enemies. He starts from a weak spot, and Ebb and Flow can now be broken.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Troll Warlord</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 52.7% WR, 491 games</div><p>Battle Trance swaps 35% slow resist for 15/20/25% status resist, and he gets +1 base regen. Cheaper Butterfly and BKB-piercing Skadi fit him well.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Juggernaut</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.3% WR · rated 58</div><p>Swiftslash is gone, he is fully disarmed in Blade Fury, and the end-of-spin dispel dropped from strong to basic. His new Aghanim's Scepter lets him attack while spinning at 75% damage. Test it before you trust it.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Lifestealer</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 49.7% WR · rated 66</div><p>Infest heals less, its explosion radius dropped from 700 to 600, and the Scepter version can no longer grab a BKB'd enemy. Still decent, but other carries passed him.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Lone Druid</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.0% WR</div><p>A new Scepter ability stores the Druid in the Bear when he would die nearby, and you resummon him later. The Bear's Scepter disarm range is no longer global. Strong pusher for the mega creep horn.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Dragon Knight</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 53.3% WR as carry</div><p>His level 10, 15 and 20 talents were all trimmed and early Breathe Fire debuffs are shorter. He is better spent at mid or offlane this patch.</p></div>
+    </div></div>
+
+    <div class="tier C"><div class="letter">C</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Phantom Assassin</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 49.7% WR</div><p>Blur now makes her invisible outside a 600 radius, but Immaterial lost 5% evasion at every level and Butterfly went from 35% to 30% evasion.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Wraith King</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 49.6% WR</div><p>Longer Wraithfire stun and more skeletons early (3 charges at level 1), fewer late (6 instead of 8). Easy to play, but nothing pushes him up.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Medusa</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 49.4% WR</div><p>Gorgon's Grasp is now magical, with much higher impact damage, far less damage over time and a lower cooldown. Slower jungle gold works against a hero who wants to farm for 40 minutes.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Terrorblade</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 46.3% WR · rated 7</div><p>Reflection illusions get 25% potency and Terror Wave does 250 damage, but Demon Zeal attack speed fell from 100 to 90 and Dark Unity can be broken.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Monkey King</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 47.3% WR</div><p>Boundless Strike gets a 12s cooldown at max level, more damage and a longer stun, though the crit fell from 180% to 150%.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Kez</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 47.7% WR</div><p>Raptor Dance now deals physical attacks that trigger on-hit items, and Echo Slash leans on base damage. Interesting, but unproven.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Drow Ranger</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 44.7% WR</div><p>Gust cooldown, Marksmanship proc damage and intelligence gain all went up. Base HP matters a lot on a hero this fragile. Still climbing out of a deep hole.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Gyrocopter</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 40.1% WR</div><p>Flak Cannon now procs attack modifiers at 50% potency, but its radius shrank from 1250 to 1050. Too far behind to trust yet.</p></div>
+    </div></div>
+
+    <div class="tier X"><div class="letter">Avoid</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Shadow Fiend</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 37.2% WR as carry</div><p>Already the worst carry after the 7.41f Necromastery nerf, and 7.42 lowers early Shadowraze stacking damage again.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Templar Assassin</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 46.0% WR</div><p>Small trap and intelligence tweaks only. Nothing changes her problems.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Sniper</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 43.4% WR (all roles)</div><p>Shrapnel slows less and Take Aim has a longer cooldown. Bonus potency on Assassinate doesn't save him.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="builds">
+  <h2>Pos 1 builds</h2>
+  <p class="sub">One recommended and one alternative build for every S, A and B tier carry above. Items are in buy order after your laning items, and the last one or two are luxury slots you swap for whatever the game needs. Your team gets an Aghanim's Shard from the second Tormentor kill, so Shard notes assume you have it by midgame.</p>
+  <div class="buildgrid">
+    <article class="build">
+      <div class="bh"><span class="tierchip S" title="S tier">S</span><h3>Chaos Knight</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Gauntlets of Strength, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Phantasm on-hit</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Armlet of Mordiggian</span></li><li><span>Desolator</span></li><li><span>Skull Basher</span></li><li><span>Black King Bar</span></li><li><span>Abyssal Blade</span></li><li><span>Sabatons of Mordiggian</span></li></ol><p>Phantasms now have 100% Item Potency, so every illusion applies Desolator and rolls Basher at full strength. Start with Phase instead of Treads because Phase plus Armlet becomes Sabatons later, and take the Shard from the second Tormentor since the Chaos Bolt illusion now deals full damage.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Blink initiator</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Armlet of Mordiggian</span></li><li><span>Blink Dagger</span></li><li><span>Aghanim's Shard</span></li><li><span>Black King Bar</span></li><li><span>Assault Cuirass</span></li><li><span>Overwhelming Blink</span></li></ol><p>Use this when your team needs you to start fights. Ahead, Armageddon only works while a Phantasm is alive, so Blink is your way in before ult is up, and Assault's armor aura covers your illusions too.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip S" title="S tier">S</span><h3>Phantom Lancer</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, 2 Slippers of Agility (they build into Corrosion)</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Tank and burn</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Manta Style</span></li><li><span>Heart of Tarrasque</span></li><li><span>Eye of Skadi</span></li><li><span>Disperser</span></li></ol><p>Diffusal's mana burn now works on every illusion hit, which is the main reason PL gets better this patch. Heart keeps you and your illusions alive against AoE, and Skadi adds a slow and heal cut that goes through BKB.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Damage race</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Manta Style</span></li><li><span>Butterfly</span></li><li><span>Abyssal Blade</span></li><li><span>Eye of Skadi</span></li></ol><p>Go this way against physical lineups or when you're already ahead. Butterfly is 450g cheaper now and Abyssal adds +15 agility and +25 melee range.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip S" title="S tier">S</span><h3>Sven</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Gauntlets of Strength, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Cleave carry</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Mask of Madness</span></li><li><span>Echo Sabre</span></li><li><span>Black King Bar</span></li><li><span>Daedalus</span></li><li><span>Satanic</span></li><li><span>Aghanim's Scepter</span></li></ol><p>Mask of Madness is 100g cheaper and now gives attack speed. Scepter's Storm Hammer range bonus went from +25% to +30%.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Harpoon pick-off</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Echo Sabre</span></li><li><span>Blink Dagger</span></li><li><span>Black King Bar</span></li><li><span>Harpoon</span></li><li><span>Daedalus</span></li><li><span>Swift Blink</span></li></ol><p>Harpoon now builds from Echo Sabre and Dragon Lance and gives +30 strength, +15 agility and +25 melee range. Pick this when the enemy carry kites or blinks away from you.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip A" title="A tier">A</span><h3>Spectre</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Circlet, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Radiance</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Radiance</span></li><li><span>Manta Style</span></li><li><span>Eye of Skadi</span></li><li><span>Heart of Tarrasque</span></li><li><span>Butterfly</span></li></ol><p>The classic farm route. Haunt illusions now have 40% Item Potency, so Skadi's slow and heal cut land even while you're on the other side of the map.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Diffusal tempo</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Manta Style</span></li><li><span>Eye of Skadi</span></li><li><span>Heart of Tarrasque</span></li></ol><p>This fights earlier than Radiance. Use it against mana-hungry heroes or when your team needs Haunt at 20 minutes instead of 30.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip A" title="A tier">A</span><h3>Ursa</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Iron Branches, Magic Stick</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Blink and bash</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Morbid Mask</span></li><li><span>Blink Dagger</span></li><li><span>Skull Basher</span></li><li><span>Black King Bar</span></li><li><span>Abyssal Blade</span></li><li><span>Satanic</span></li></ol><p>Abyssal now needs Dragon Lance, which adds +15 agility and +25 melee range. It lost its slow resistance, so get BKB before Abyssal against heavy disables. Morbid Mask turns into Satanic at the end.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Kite-proof</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Blink Dagger</span></li><li><span>Diffusal Blade</span></li><li><span>Black King Bar</span></li><li><span>Eye of Skadi</span></li><li><span>Abyssal Blade</span></li><li><span>Satanic</span></li></ol><p>Pick this against heroes who kite or blink out. Skadi now pierces BKB, so the slow stays on their carry while you finish the swipes.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip A" title="A tier">A</span><h3>Slark</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, 2 Slippers of Agility</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Silver Edge</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Silver Edge</span></li><li><span>Abyssal Blade</span></li><li><span>Eye of Skadi</span></li><li><span>Butterfly</span></li></ol><p>Corrosion and Skadi both pierce BKB now, which makes Essence Shift fights against BKB carries easier. Silver Edge's break is extra useful because a lot more innates can be broken in 7.42.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Basher into BKB</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Skull Basher</span></li><li><span>Black King Bar</span></li><li><span>Abyssal Blade</span></li><li><span>Eye of Skadi</span></li><li><span>Satanic</span></li></ol><p>Use this against lineups with a lot of stuns and silences, where you need BKB before you can afford Silver Edge.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip A" title="A tier">A</span><h3>Luna</h3></div>
+      <div class="start"><b>Start:</b> Tango, Slippers of Agility, Circlet, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Glaive Skadi</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Mask of Madness</span></li><li><span>Manta Style</span></li><li><span>Eye of Skadi</span></li><li><span>Black King Bar</span></li><li><span>Butterfly</span></li><li><span>Satanic</span></li></ol><p>Glaive bounces now carry on-hit effects with 40% less potency per bounce, so Skadi's slow spreads through a fight. Lifesteal still only works on your main target.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Range and save</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Mask of Madness</span></li><li><span>Dragon Lance</span></li><li><span>Manta Style</span></li><li><span>Black King Bar</span></li><li><span>Hurricane Pike</span></li><li><span>Satanic</span></li></ol><p>Go this way when the enemy has gap-closers like Slark, Ursa or PA. Pike's push can no longer be dispelled.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip A" title="A tier">A</span><h3>Anti-Mage</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Slippers of Agility, Iron Branch</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Battle Fury</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Battle Fury</span></li><li><span>Manta Style</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li><li><span>Eye of Skadi</span></li></ol><p>The standard farm route. Manta illusions now carry your on-hit items at 35% and Abyssal adds +15 agility.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Manta first</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Yasha</span></li><li><span>Manta Style</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li><li><span>Black King Bar</span></li></ol><p>Skip Battle Fury when the enemy can punish a slow farm with early aggression. Yasha is 100g cheaper now, and you're fighting by 15 minutes for the first Tormentor.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Faceless Void</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Slippers of Agility, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Mjollnir</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Mask of Madness</span></li><li><span>Maelstrom</span></li><li><span>Black King Bar</span></li><li><span>Mjollnir</span></li><li><span>Eye of Skadi</span></li><li><span>Butterfly</span></li></ol><p>Pick up the Shard. Its Time Dilation attack speed swing went from 9-12 to 17-20, and Dilation itself now has a 15s cooldown at max level.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Burst</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Mask of Madness</span></li><li><span>Desolator</span></li><li><span>Black King Bar</span></li><li><span>Daedalus</span></li><li><span>Satanic</span></li></ol><p>Use this in fight-heavy drafts where you want every Chronosphere to end in kills fast.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Naga Siren</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, 2 Slippers of Agility</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Diffusal tank</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Heart of Tarrasque</span></li><li><span>Butterfly</span></li><li><span>Eye of Skadi</span></li><li><span>Disperser</span></li></ol><p>Diffusal's burn now applies through illusion hits, and Rip Tide's armor shred starts at 3.5 instead of 2.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Split push</div><ol class="chain"><li><span>Orb of Corrosion</span></li><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Manta Style</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li></ol><p>More bodies for pushing three lanes. Manta illusions get 35% potency, higher than the 20% your Mirror Image illusions have.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Riki</h3></div>
+      <div class="start"><b>Start:</b> Tango, Slippers of Agility, Circlet, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Diffusal bash</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Diffusal Blade</span></li><li><span>Skull Basher</span></li><li><span>Black King Bar</span></li><li><span>Abyssal Blade</span></li><li><span>Eye of Skadi</span></li><li><span>Disperser</span></li></ol><p>Backstab hits now get 10% extra Item Potency plus 10% more per 15 levels, so Diffusal burns more and Basher procs more often from behind.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Burst pick-off</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Desolator</span></li><li><span>Black King Bar</span></li><li><span>Daedalus</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li></ol><p>Use this for picking off supports. Desolator's armor cut also scales with Backstab's extra potency.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Morphling</h3></div>
+      <div class="start"><b>Start:</b> Tango, Slippers of Agility, Circlet, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Agility carry</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Manta Style</span></li><li><span>Linken's Sphere</span></li><li><span>Eye of Skadi</span></li><li><span>Butterfly</span></li><li><span>Satanic</span></li></ol><p>Keep agility high for Adaptive Strike and Waveform. Manta illusions now bring your Skadi with them.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Scepter morph</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Ethereal Blade</span></li><li><span>Linken's Sphere</span></li><li><span>Aghanim's Scepter</span></li><li><span>Manta Style</span></li><li><span>Butterfly</span></li></ol><p>Only when the enemy has strong unit-target spells to copy, like Lion, Lina, Doom or Bane. While morphed, each unit-target spell you cast gets recast on nearby enemies at 50% and then 25% strength.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Troll Warlord</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Circlet, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · S&amp;Y bash</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Sange and Yasha</span></li><li><span>Black King Bar</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li><li><span>Satanic</span></li></ol><p>Sange and Yasha is 200g cheaper and now gives 20% health restoration. Abyssal's +25 range applies to your melee form.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Battle Fury</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Battle Fury</span></li><li><span>Black King Bar</span></li><li><span>Eye of Skadi</span></li><li><span>Butterfly</span></li><li><span>Satanic</span></li></ol><p>Faster farm when your lane is safe. Skadi now goes through BKB, so targets stay in reach of your melee form.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Juggernaut</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Slippers of Agility, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Battle Fury</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Battle Fury</span></li><li><span>Manta Style</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Butterfly</span></li><li><span>Eye of Skadi</span></li></ol><p>The safe pick while the rework settles. Blade Fury now fully disarms you without Scepter, so use it for farming and escaping more than for fighting.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Spin Scepter</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Maelstrom</span></li><li><span>Aghanim's Scepter</span></li><li><span>Manta Style</span></li><li><span>Mjollnir</span></li><li><span>Eye of Skadi</span></li><li><span>Butterfly</span></li></ol><p>Try this in unranked first. With Scepter you keep attacking while you spin and move, at 75% damage and Item Potency, so Maelstrom and Skadi still proc during Blade Fury.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Lifestealer</h3></div>
+      <div class="start"><b>Start:</b> Tango, Quelling Blade, Gauntlets of Strength, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Desolator</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Armlet of Mordiggian</span></li><li><span>Desolator</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Eye of Skadi</span></li><li><span>Sabatons of Mordiggian</span></li></ol><p>Phase plus Armlet turns into Sabatons late. The Shard now adds Open Wounds to every Infest explosion, which is worth grabbing from the second Tormentor.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Radiance</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Armlet of Mordiggian</span></li><li><span>Radiance</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Satanic</span></li></ol><p>Slower and tankier. Radiance speeds up your farm and keeps damage ticking on everyone near you in long fights.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Lone Druid</h3></div>
+      <div class="start"><b>Start:</b> Druid: Tango, Iron Branches. Bear: Quelling Blade</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Bear carry</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Mask of Madness</span></li><li><span>Maelstrom</span></li><li><span>Desolator</span></li><li><span>Skull Basher</span></li><li><span>Abyssal Blade</span></li><li><span>Assault Cuirass</span></li></ol><p>These are Bear items. Get Aghanim's Scepter on the Druid by midgame: if he dies near the Bear, his spirit is stored and you resummon him at full health. The Bear's Scepter disarm range is no longer global.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Fast push</div><ol class="chain"><li><span>Phase Boots</span></li><li><span>Maelstrom</span></li><li><span>Assault Cuirass</span></li><li><span>Mjollnir</span></li><li><span>Eye of Skadi</span></li><li><span>Abyssal Blade</span></li></ol><p>Bear items again. Take the 15:00 Tormentor and use its mega creep horn to end before the enemy carry is ready.</p></div>
+    </article>
+    <article class="build">
+      <div class="bh"><span class="tierchip B" title="B tier">B</span><h3>Dragon Knight</h3></div>
+      <div class="start"><b>Start:</b> Tango, Gauntlets of Strength, Iron Branches</div>
+      <div class="path rec"><div class="plabel"><span>Recommended</span> · Blink Desolator</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Blink Dagger</span></li><li><span>Desolator</span></li><li><span>Black King Bar</span></li><li><span>Aghanim's Scepter</span></li><li><span>Assault Cuirass</span></li><li><span>Satanic</span></li></ol><p>DK is better spent at mid or offlane this patch, but this build works from the safe lane.</p></div>
+      <div class="path alt"><div class="plabel"><span>Alternative</span> · Tank</div><ol class="chain"><li><span>Power Treads</span></li><li><span>Blink Dagger</span></li><li><span>Aghanim's Scepter</span></li><li><span>Assault Cuirass</span></li><li><span>Heart of Tarrasque</span></li><li><span>Satanic</span></li></ol><p>Go this way against physical lineups, when you need to soak damage and take towers more than you need kills.</p></div>
+    </article>
+  </div>
+</section>
+
+<section id="mid">
+  <h2>Position 2</h2>
+  <p class="sub">Nukers took the broadest nerfs in 7.42, so mids who fight with attacks or tankiness rose. Baselines are mid-role numbers where D2PT listed them.</p>
+  <div class="board">
+    <div class="tier S"><div class="letter">S</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Invoker</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 53.7% WR · rated 92 (top mid)</div><p>Sun Strike max damage fell from 575 to 495, Chaos Meteor burns less and the Deafening Blast disarm is now dispellable. He ended 7.41f so far ahead of every other mid that he should stay on top.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Outworld Destroyer</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 52.7% WR · rated 84</div><p>Arcane Orb converts 1% less of his mana pool, Sanity's Eclipse lost base damage and strength gain went down. Intelligence now gives more magic resistance, which suits a hero with this much of it.</p></div>
+    </div></div>
+
+    <div class="tier A"><div class="letter">A</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Dragon Knight</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 52.2% WR · rated 69</div><p>His level 10, 15 and 20 talents were trimmed, yet he is still a tanky physical hero who takes Tormentor well in a patch that rewards both.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Meepo</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 55.2% WR, 715 games</div><p>Now Universal. The XP penalty only applies when several Meepos gain XP at once, which helps his farming a lot. Dig moved to the Scepter and lasts 4s with a 50% heal. MegaMeepo is gone.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Leshrac</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.6% WR</div><p>Nihilism is now a 4-second disarm aura that keeps dispelling enemies and himself, and it works while he is under BKB. That is a strong answer to right-click carries in a right-click patch.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Puck</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 51.4% WR</div><p>+2 base agility, Waning Rift is a second faster at every level and Dream Coil drops to 70s at max level.</p></div>
+    </div></div>
+
+    <div class="tier B"><div class="letter">B</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Ember Spirit</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 51.6% WR · rated 65</div><p>Sleight of Fist is cheaper but its hits now carry 80% Item Potency. Fire Remnant and early Flame Guard were also trimmed.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Storm Spirit</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 46.6% WR (all roles)</div><p>+1 intelligence, better damage and more mana regen per Galvanized charge. Low-strength mids gain the most from the new base HP, and his own spells were spared.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Void Spirit</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 46.5% WR (all roles)</div><p>Cheaper Dissimilate, a bigger early Resonant Pulse barrier and +25% Item Potency on Astral Step's attack.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Primal Beast</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 53.4% WR</div><p>+10 max damage and Rock Throw now scales with strength, but base attack time worsened from 1.8 to 1.9.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Arc Warden</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 52.0% WR</div><p>Tempest Double gives the enemy more gold when it dies (100 + 10 per level). Otherwise only a talent swap.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Death Prophet</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.9% WR</div><p>Witchcraft now sends a healing ghost on every attack, Spirit Siphon moved to the Scepter and steals attack speed, and attack range dropped from 600 to 500.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Lycan</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 58.2% WR, 249 games</div><p>New Pack Hunter innate marks enemies on hit, reveals them even when invisible, and adds damage and lifesteal against marked targets. Helm of the Overlord is gone.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Tiny</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 45.3% WR (all roles)</div><p>Faster Avalanche projectile, longer Tree Grab range and an extra tree attack on the level 10 talent.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Keeper of the Light</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 54.0% WR · rated 59</div><p>Solar Bind and Spirit Form were cut, and Bright Speed can now be broken.</p></div>
+    </div></div>
+
+    <div class="tier C"><div class="letter">C</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Lina</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 47.3% WR</div><p>Laguna Blade went from 760 to 690 at max level and Flame Cloak lost spell amp. The poster child for the magic nerfs.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Tinker</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 49.6% WR</div><p>Scepter Laser shreds less health and Warp Flare slows instead of rooting.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Queen of Pain</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 45.3% WR (all roles)</div><p>More lifesteal and a lower Sonic Wave cooldown, but less Sonic Wave damage.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Pugna</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.1% WR (all roles)</div><p>Scepter now gives two charges to recast any ability, and Life Drain can hold several targets.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Zeus</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 47.4% WR (all roles)</div><p>Shorter attack range and a fragile Nimbus that melee heroes kill in half the hits.</p></div>
+    </div></div>
+
+    <div class="tier X"><div class="letter">Avoid</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Shadow Fiend</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 39.5% WR (all roles)</div><p>The lowest win rate in this data at the end of 7.41f and nerfed again early.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Sniper</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 43.4% WR (all roles)</div><p>Same story as carry. Skip him.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<section id="off">
+  <h2>Position 3</h2>
+  <p class="sub">Offlaners who scale with attacks, take Tormentor early or punish illusion carries come out ahead. Baselines are offlane-role numbers.</p>
+  <div class="board">
+    <div class="tier S"><div class="letter">S</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Night Stalker</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 51.9% WR · rated 72</div><p>Scepter bonus attack speed rose from 50 to 70, Midnight Feast heals more early and his level 10 Crippling Fear talent got stronger. He was already top three and only got buffs.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Dark Seer</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 50.5% WR · rated 63</div><p>Vacuum's cooldown drops to 26s at max level, and Wall of Replica copies now have 60% Item Potency. The copies carry the enemy's own items, so their carry's Skadi or Diffusal works against their team.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Enigma</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 59.5% WR · rated 92 (top offlaner)</div><p>Black Hole damage per second and Eidolon damage and regen were all cut. He ended 7.41f more than nine points above 50%, so he has plenty of room to absorb it.</p></div>
+    </div></div>
+
+    <div class="tier A"><div class="letter">A</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Beastmaster</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 53.6% WR · rated 49</div><p>New Scepter summons an Ancient Thunderhide with 2200 HP, a slam that slows and an aura that adds up to 20% max HP and damage to him and his units. Wild Axes and Raptors were buffed too. Perfect with the mega creep horn.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Chaos Knight</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 51.0% WR (all roles)</div><p>The same rework that makes him a top carry works from the offlane, and you can flex him into either slot during the draft.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Legion Commander</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 51.0% WR · rated 64</div><p>Strength gain fell from 3.0 to 2.8, but she gets an attack speed talent at 10 and a Moment of Courage crit at 25. Blade Mail and Halberd both got cheaper.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Doom</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 50.5% WR · rated 68</div><p>Scorched Earth's cooldown went up a few seconds and Devour costs a flat 66 mana. Doom itself is untouched.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Dragon Knight</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 50.6% WR · rated 73</div><p>Same talent nerfs as mid. Still durable and good at Tormentor.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Visage</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 57.1% WR, 929 games</div><p>Grave Chill steals more attack speed. Very high win rate in a small sample last patch.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Brewmaster</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 52.6% WR · rated 60</div><p>The Fire brewling gains Cinder Dash, a vector pull of up to 700 range. Earth brewling HP, Thunder Clap and Cinder Brew were trimmed.</p></div>
+    </div></div>
+
+    <div class="tier B"><div class="letter">B</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Dawnbreaker</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 51.8% WR · rated 67</div><p>Starbreaker hits less, her level 10 crit talent dropped and Break of Dawn can be broken.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Pudge</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 52.4% WR · rated 65</div><p>Dismember's strength scaling fell from 0.9 to 0.7 at max level and the Shard no longer refunds hook cooldown on allies.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Mars</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 47.6% WR</div><p>God's Rebuke cooldown down to 8s at max level and a stronger Arena Scepter.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Magnus</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 48.7% WR</div><p>+1 strength and more early Shockwave damage, which helps his lane.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Bristleback</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 45.9% WR (all roles)</div><p>+3 base damage, stronger Prickly, and Viscous Nasal Goo hits harder at max level.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Venomancer</span><span class="tag up">▲ Up</span></div><div class="base">7.41f: 51.3% WR (all roles)</div><p>Plague Wards now apply Poison Sting, and Noxious Plague damage and slow can't be dispelled.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Axe</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 47.2% WR</div><p>Battle Hunger slows less and agility gain dropped, but missed attacks now count toward Counter Helix.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Abaddon</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 50.4% WR (all roles)</div><p>Mist Coil Scepter now attacks every enemy near the target, and Borrowed Time lost its Scepter upgrade.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Lycan</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 52.8% WR</div><p>Same Pack Hunter rework as mid. Strong objective taker if the innate works the way it reads.</p></div>
+    </div></div>
+
+    <div class="tier C"><div class="letter">C</div><div class="heroes">
+      <div class="hero"><div class="hd"><span class="nm">Centaur Warrunner</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 49.1% WR</div><p>Stampede's strength scaling fell to 2.5x at max level and Horsepower can now be broken.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Tidehunter</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 46.1% WR (all roles)</div><p>Ravage lost 20 damage at max level and Gush is shorter.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Timbersaw</span><span class="tag down">▼ Down</span></div><div class="base">7.41f: 46.2% WR (all roles)</div><p>Whirling Death and Chakram both deal less damage, and base agility dropped by 3.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Underlord</span><span class="tag rework">✦ Rework</span></div><div class="base">7.41f: 45.4% WR (all roles)</div><p>Invading Force now grants a physical barrier instead of damage resistance.</p></div>
+      <div class="hero"><div class="hd"><span class="nm">Slardar</span><span class="tag steady">● Steady</span></div><div class="base">7.41f: 44.4% WR (all roles)</div><p>Only talent changes.</p></div>
+    </div></div>
+  </div>
+  <div class="callout"><b>Test in unranked first:</b> Juggernaut, Meepo, Leshrac, Lycan, Death Prophet, Kez, Pugna and Brewmaster had parts of their kits rebuilt. The notes read well for several of them, but these are the heroes where day-one tiers are most likely to be wrong.</div>
+</section>
+
+<section id="items">
+  <h2>Items</h2>
+  <p class="sub">Javelin, Khanda and Helm of the Overlord are gone. Quarterstaff (900g, +10 damage, +10 attack speed) is back. Six new upgrades were added, and most on-hit items now work on illusions.</p>
+  <div class="itemgrid">
+    <div class="panel">
+      <h3>Pos 1: buy more <small>my priority order</small></h3>
+      <ul class="items">
+        <li><span class="iname">Manta Style</span><span class="cost">4550g</span><br>100g cheaper and Mirror Image illusions now have 35% Item Potency, so they bring your Skadi, Diffusal and Desolator along. Movement speed bonus dropped from 10% to 6%.</li>
+        <li><span class="iname">Eye of Skadi</span><br>Cold Attack now pierces BKB and works on illusions. The slow went from 25/50% to 20/40% (melee/ranged), but it sticks for the whole fight.</li>
+        <li><span class="iname">Orb of Corrosion</span><span class="cost">880g</span><br>Now built from two Slippers of Agility, 170g cheaper, pierces BKB and works on illusions. An easy early buy for illusion heroes and melee carries.</li>
+        <li><span class="iname">Abyssal Blade</span><span class="cost">6150g</span><br>Builds from Dragon Lance now, giving +15 agility and +25 range on melee heroes. It lost 16% health restoration and 30% slow resistance, so it suits Slark, Ursa and Void more than strength bruisers.</li>
+        <li><span class="iname">Diffusal Blade / Desolator</span><br>Both now apply through illusions at the illusion's Item Potency. Core on PL, Naga, Spectre and Chaos Knight.</li>
+        <li><span class="iname">Butterfly</span><span class="cost">5000g</span><br>450g cheaper and built from Quarterstaff. Evasion fell from 35% to 30% and the base attack speed bonus became a flat +30 attack speed.</li>
+        <li><span class="iname">Mask of Madness</span><span class="cost">1800g</span><br>Quarterstaff instead of Broadsword. 100g cheaper, -5 damage, +10 attack speed.</li>
+        <li><span class="iname">Sabatons of Mordiggian</span><span class="cost">5950g</span><br>Phase Boots plus Armlet plus a 2000g recipe. The toggle drains 45 HP per second for +40 damage, +30 strength, +5 armor, phased movement and slow resistance that scales with your health. A late-game boot slot for Chaos Knight, Lifestealer and Wraith King.</li>
+        <li><span class="iname">Skypiercer</span><span class="cost">6000g</span><br>Halberd, Sange and Talisman of Evasion. +35 strength, 25% evasion, 25% slow resist and a 3-second disarm whose cooldown runs 125% faster when you stand near an enemy hero.</li>
+        <li><span class="iname">Small buffs</span><br>Wraith Band now gives +10 attack speed (up from +6). Phase Boots give melee heroes +55 speed and a flat +15 damage. Monkey King Bar went to +55 damage but lost its +50 melee range.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Pos 2 <small>for spell mids</small></h3>
+      <ul class="items">
+        <li><span class="iname">Starforge</span><span class="cost">6000g</span><br>Meteor Hammer plus Ultimate Orb. +24 strength and agility, +40 intelligence. The Meteor also hits for 15% of max health, and after any of your stuns, hexes, sleeps or cyclones end the target burns for 60 damage a second with a 15% slow for 3 seconds.</li>
+        <li><span class="iname">Caduceus</span><span class="cost">5400g</span><br>Force Staff plus Phylactery. Your next unit-target spell on an enemy adds 175 damage and a 40% slow, and on an ally it heals 200. Each side has its own 8s cooldown. This is the new home for Phylactery now that Khanda is gone.</li>
+        <li><span class="iname">Bloodstone</span><br>Cooldown 35s to 30s and spell lifesteal 60% to 70% during Bloodpact.</li>
+        <li><span class="iname">Witch Blade / Parasma</span><br>Witch Blade no longer needs Orb of Venom. Parasma scales better with intelligence (0.85x) and now damages buildings.</li>
+        <li><span class="iname">Ethereal Blade and Arcane Boots</span><br>Both slightly better. Arcane gives +50 speed, +150 mana and a 50s cooldown.</li>
+      </ul>
+      <h3 style="margin-top:16px">Got worse <small>skip or delay</small></h3>
+      <ul class="items">
+        <li><span class="iname">Kaya family</span><br>Kaya spell amp 10% to 6%, Kaya and Sange / Yasha and Kaya 12% to 10%. Meteor Hammer also 10% to 6%.</li>
+        <li><span class="iname">Octarine Core</span><br>Cooldown reduction 25% to 20%, after a 200g price rise in 7.41f.</li>
+        <li><span class="iname">Aether Lens, Veil, Shiva's</span><br>Less cast range, less magic amp, and Shiva's slow drops from 40% to 30%.</li>
+        <li><span class="iname">Bloodthorn</span><br>No more Javelin means no more Pierce. Buy MKB for true strike.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Pos 3 <small>aura and anti-carry</small></h3>
+      <ul class="items">
+        <li><span class="iname">Heaven's Halberd</span><span class="cost">2400g</span><br>900g cheaper and now built from Ogre Axe and Helm of Iron Will. +12 strength and a 3-second disarm at 500 range. It no longer gives evasion.</li>
+        <li><span class="iname">Crimson Guard</span><span class="cost">3725g</span><br>Now includes Buckler, so it carries a 2-armor aura on top of the active. +5 armor, but less regen and the barrier can be dispelled.</li>
+        <li><span class="iname">Ristul's Devotion</span><span class="cost">3800g</span><br>Vladmir's plus Splintmail plus Voodoo Mask. Aura gives allies 20% lifesteal, 18% spell lifesteal, 18% bonus damage and 2 armor. Great when your carry is a right-clicker.</li>
+        <li><span class="iname">Pipe and Blade Mail</span><br>Pipe drops to a 50s cooldown (barrier now dispellable). Blade Mail is 50g cheaper.</li>
+        <li><span class="iname">Guardian Greaves</span><span class="cost">4350g</span><br>100g cheaper and +55 movement speed, but no emergency regen when low.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="neutrals">
+  <h2>Neutral items</h2>
+  <p class="sub">Artifact tiers went from five to four, unlocking at 0:00, 15:00, 30:00 and 50:00, with unlimited Madstone from 65:00. Each tier is now split into four pools, and every game picks one artifact from each pool at the start. The bold ones are the best for cores.</p>
+  <div class="tablewrap">
+  <table class="pools">
+    <thead><tr><th>Tier</th><th>Pool 1</th><th>Pool 2</th><th>Pool 3</th><th>Pool 4</th></tr></thead>
+    <tbody>
+      <tr><th>T1 · 0:00</th><td>Chipped Vest, Ash Legion Shield, <b>Possessed Mask</b></td><td>Dormant Curio, Red Ledger, Weighted Dice</td><td>Pollywog Charm, Seeds of Serenity, Forager's Kit</td><td>Kobold Cup, Stonefeather Satchel, Tumbler's Toy</td></tr>
+      <tr><th>T2 · 15:00</th><td>Psychic Headband, <b>Safety Bubble</b>, Metamorphic Mandible</td><td>Jidi Pollen Bag, <b>Brick</b>, Crippling Crossbow</td><td><b>Imp Claw</b>, Gunpowder Gauntlets, Defiant Shell</td><td>Partisan's Brand, Spellslinger, Mana Draught</td></tr>
+      <tr><th>T3 · 30:00</th><td>Prophet's Pendulum, Dandelion Amulet, Idol of Scree'Auk</td><td>Balmhook, Rattlecage, Stormcrafter</td><td>Enchanter's Bauble, Ceremonial Robe, Harmonizer</td><td><b>Vile Phial, Serrated Shiv, Revenant's Brooch</b></td></tr>
+      <tr><th>T4 · 50:00</th><td>Fallen Sky, Flicker, Minotaur Horn</td><td><b>Mind Breaker, Divine Regalia</b>, Witchbane</td><td>Helm of the Hivemind, Dezun Bloodrite, Conjurer's Catalyst</td><td>Giant's Ring, Book of the Dead, <b>Riftshadow Prism</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="split" style="margin-top:14px">
+    <div class="sys">
+      <h3>Picks worth knowing</h3>
+      <ul>
+        <li><b>Serrated Shiv</b> now procs 30% of the time for 10% of current HP and works on illusions.</li>
+        <li><b>Vile Phial</b> is new. Four hits in 10 seconds poison the target for 40 damage a second and cut their healing by 35%. Illusion hits count.</li>
+        <li><b>Riftshadow Prism</b> now makes a strong illusion with 100% Item Potency and only costs 4% HP.</li>
+        <li><b>Imp Claw</b> is back as a free 130% crit every 7 seconds from 15:00.</li>
+        <li><b>Brick</b> deals 150 physical damage and strips 200 from barriers, which is handy against Pipe, Crimson and shields.</li>
+      </ul>
+    </div>
+    <div class="sys">
+      <h3>Enchantments for cores</h3>
+      <p><b>Evolved</b> is now a tier 4 enchantment that gives +20 to your primary attribute (down from +40) plus +20% Item Potency. With Desolator that means 7.2 armor reduction per hit instead of 6. <b>Titanic</b> (+10/15% base damage) and <b>Crude</b> (7/12% faster base attack time) are the tier 2 and 3 picks for right-click heroes. <b>Alert</b> now tops out at +28 attack speed and 80 range for ranged heroes.</p>
+    </div>
+  </div>
+</section>
+
+<section id="patch">
+  <h2>Patch breakdown</h2>
+  <p class="sub">Where 7.41f left the game, and the 7.42 systems behind the tiers above.</p>
+
+  <div class="split">
+    <div class="sys">
+      <h3>7.41f: the patch you are coming from</h3>
+      <p>7.41f landed in mid-September as a post-TI nerf pass with no new systems. On items it raised the price of Daedalus, Dragon Lance, Heart and Octarine Core, cut Satanic lifesteal from 30% to 25% and Mask of Madness from 24% to 22%, and lowered Shiva's blast from 260 to 225. Battle Fury's chop got faster and Halberd got cheaper.</p>
+      <p>On heroes it hit Shadow Fiend hardest by reworking Necromastery's soul damage, and it also nerfed Lina, Spectre, Ember, Lifestealer, Kez, Centaur, Necrophos, Winter Wyvern and Bounty Hunter's Track gold. Anti-Mage got Mana Break up to 65% and Ursa's Maul went from 1.25% to 1.75% of health as damage.</p>
+    </div>
+    <div class="sys">
+      <h3>Where 7.41f ended (7000+ MMR)</h3>
+      <div class="tablewrap">
+      <table class="stat-table">
+        <thead><tr><th>Role</th><th>Hero</th><th class="r">WR</th><th class="r">D2PT</th></tr></thead>
+        <tbody>
+          <tr><td>Carry</td><td>Sven</td><td class="r">52.1%</td><td class="r">84</td></tr>
+          <tr><td>Carry</td><td>Phantom Lancer</td><td class="r">50.9%</td><td class="r">83</td></tr>
+          <tr><td>Carry</td><td>Luna</td><td class="r">50.7%</td><td class="r">70</td></tr>
+          <tr><td>Carry</td><td>Slark</td><td class="r">52.4%</td><td class="r">69</td></tr>
+          <tr><td>Mid</td><td>Invoker</td><td class="r">53.7%</td><td class="r">92</td></tr>
+          <tr><td>Mid</td><td>Outworld Destroyer</td><td class="r">52.7%</td><td class="r">84</td></tr>
+          <tr><td>Mid</td><td>Dragon Knight</td><td class="r">52.2%</td><td class="r">69</td></tr>
+          <tr><td>Offlane</td><td>Enigma</td><td class="r">59.5%</td><td class="r">92</td></tr>
+          <tr><td>Offlane</td><td>Dragon Knight</td><td class="r">50.6%</td><td class="r">73</td></tr>
+          <tr><td>Offlane</td><td>Night Stalker</td><td class="r">51.9%</td><td class="r">72</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p style="margin-top:8px;font-size:14px;color:var(--muted)">At the bottom, Shadow Fiend carry sat at 37.2% and Gyrocopter carry at 40.1%.</p>
+    </div>
+  </div>
+
+  <div class="split" style="margin-top:14px">
+    <div class="sys">
+      <h3>1. Tankier heroes, weaker magic</h3>
+      <p>Base hero health went from 120 to 200, while each point of strength now gives 20 HP instead of 22. Below 40 strength every hero is tankier than before, and a hero with 100 strength ends up 120 HP lower. Intelligence now gives 0.125% magic resistance per point instead of 0.1%.</p>
+      <p>Most magic and pure spells lost damage, and items lost spell amp, AoE and cast range. Spells that pierce debuff immunity now respect the magic resistance BKB gives.</p>
+      <p class="foryou">For you: your lane is safer, burst mids and supports kill you less, and BKB is a bit stronger. Heroes who win with attacks get relatively better.</p>
+    </div>
+    <div class="sys">
+      <h3>2. Item Potency</h3>
+      <p>Every attack now has an Item Potency value that scales on-hit item effects. A normal hero attack is 100%. Illusions default to 20% and can now apply most on-hit items. Some sources are set higher, like Manta illusions at 35%, Illusion rune at 40%, Dark Seer replicas at 60% and Chaos Knight's Phantasms at 100%. When two sources apply the same debuff, the strongest one counts.</p>
+      <p class="foryou">For you: on illusion heroes, rethink the build around Diffusal, Skadi, Corrosion and Desolator. On regular carries, Manta got better because its illusions now bring your items with them.</p>
+    </div>
+    <div class="sys">
+      <h3>3. Economy</h3>
+      <ul>
+        <li>Passive gold no longer increases over the game.</li>
+        <li>Building gold is lower. A tier 1 tower now gives <span class="num">100</span> to the last hitter and <span class="num">75</span> to each player, down from 110–130 and 90.</li>
+        <li>Neutral bounties now grow half as fast, and several camps pay less outright.</li>
+        <li>Melee creeps per wave no longer increase at 30:00.</li>
+        <li>All heroes get 50 passive XP per minute, and level 30 needs 66,600 XP instead of 64,400.</li>
+      </ul>
+      <p class="foryou">For you: late-game farm comes slower and pushing pays less. Timing a strong mid-game item matters more than reaching a full late-game inventory.</p>
+    </div>
+    <div class="sys">
+      <h3>4. Tormentor, Roshan and creeps</h3>
+      <p>Tormentor now first spawns at 15:00 instead of 20:00. Its reflect starts at 15% (up 5% per death, max 30%) behind a 4000 barrier. Every kill drops a Greater Horn of Battle that summons mega creeps in all three lanes, and from the second kill it always drops a Shard. Roshan's respawn timer shrinks by a minute per kill, down to 5 minutes. Glyph now has 2 charges. After 30:00 a siege creep spawns every 2.5 minutes.</p>
+      <p class="foryou">For you: be ready to hit Tormentor at 15. Ursa, Night Stalker, Troll, Dragon Knight and Beastmaster take it quickly, and the horn turns that win straight into tower pressure.</p>
+    </div>
+    <div class="sys">
+      <h3>5. Map and jungle</h3>
+      <p>Twin Gates moved to the top and bottom edges of the map. Mid towers shifted so both sides are the same distance from base. Each team's jungle now has its own camp types, with new Radigull and Eimermole camps for Radiant, Odobenus for Dire and a new Ancient Ogre Seal camp. The Eimermole cuts nearby enemy healing by 20%, Odobenus Footmen shred armor, and the Kobold Soldier's new ability applies Break. Creeps pulled out of lane walk up to 25% slower.</p>
+      <p class="foryou">For you: learn your side's camps before you farm them, especially as a lifesteal or regen carry. Many innates can now be broken, including Chaos Knight's movement passive.</p>
+    </div>
+    <div class="sys">
+      <h3>6. Smaller things that add up</h3>
+      <ul>
+        <li>Invisibility rune now also gives a Disguise buff like Smoke.</li>
+        <li>Smoke holds 4 charges, restocks faster and gives +25% speed.</li>
+        <li>Fountain true sight range went from 1200 to 1800.</li>
+        <li>Wards, couriers, Nimbus and Psionic Traps use pip health. Melee heroes destroy fragile pips twice as fast.</li>
+        <li>Leashes like Slark's Pounce no longer stop movement spells cast after the target became debuff immune.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer id="sources">
+  <h2 style="color:var(--ink)">Sources and method</h2>
+  <p>7.41f baselines come from Dota2ProTracker's meta page at 7000+ MMR over the last 8 days of 7.41f, read on November 18, 2026 just before 7.42 data replaced it. These are high-MMR numbers and small samples are noted on each card. Tiers are my reading of the 7.42 notes on top of those baselines, so check them against real 7.42 data once a few days of games are in.</p>
+  <ul>
+    <li><a href="https://www.dota2.com/patches/7.42">Dota 2 patch notes, 7.42</a></li>
+    <li><a href="https://www.dota2.com/patches/7.41f">Dota 2 patch notes, 7.41f</a></li>
+    <li><a href="https://dota2protracker.com/meta">Dota2ProTracker meta (7.41f, 7000+ MMR)</a></li>
+    <li><a href="https://esport.vision/news/dota-2-patch-7-42-key-changes-economy-map-tormentor">esport.vision: The 7 biggest changes in 7.42</a></li>
+    <li><a href="https://www.forbes.com/sites/mikestubbs/2026/11/18/dota-2-finally-gets-major-update-with-742-patch-notes/">Forbes: Dota 2 finally gets major update with 7.42</a></li>
+  </ul>
+</footer>
+
+</main>
+</body>
+</html>

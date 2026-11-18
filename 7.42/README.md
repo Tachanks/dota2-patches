@@ -566,4 +566,5 @@ Twin Gates moved to the top and bottom edges of the map. Mid towers shifted so b
 - [Dota 2 patch notes, 7.41f](https://www.dota2.com/patches/7.41f)
 - [Dota2ProTracker meta (7.41f, 7000+ MMR)](https://dota2protracker.com/meta)
 - [esport.vision: The 7 biggest changes in 7.42](https://esport.vision/news/dota-2-patch-7-42-key-changes-economy-map-tormentor)
+- [Patch 7.42 support tier list (pos 4–5)](https://github.com/Tachanks/dota2-patches/tree/main/7.42/supports)
 - [Forbes: Dota 2 finally gets major update with 7.42](https://www.forbes.com/sites/mikestubbs/2026/11/18/dota-2-finally-gets-major-update-with-742-patch-notes/)

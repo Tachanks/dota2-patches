@@ -4,7 +4,7 @@ A day-one read of 7.42 for a position 1 player who flexes mid and offlane. The t
 
 `7.42 released Nov 18, 2026` `7.41f baseline: Dota2ProTracker, 7000+ MMR, last 8 days` `Focus: carry, mid, offlane`
 
-**Jump to:** [Short version](#the-short-version) · [Pos 1](#position-1) · [Pos 1 builds](#pos-1-builds) · [Pos 2](#position-2) · [Pos 3](#position-3) · [Items](#items) · [Neutrals](#neutral-items) · [Patch breakdown](#patch-breakdown) · [Sources](#sources-and-method)
+**Jump to:** [Short version](#the-short-version) · [Pos 1](#position-1) · [Pos 1 builds](#pos-1-builds) · [Pos 2](#position-2) · [Pos 3](#position-3) · [Items](#items) · [Neutrals](#neutral-items) · [Patch breakdown](#patch-breakdown) · [Sources](#sources-and-method) · [Support tier list (pos 4–5)](supports/README.md)
 
 > [!NOTE]
 > `index.html` in this folder is the same guide as a standalone page. Download it and open it in a browser if you want it offline.

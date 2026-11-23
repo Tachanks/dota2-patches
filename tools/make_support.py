@@ -20,7 +20,7 @@ def e(s):
     return html.escape(s, quote=False)
 
 
-TREND_TAG = {"up": ("up", "▲ Up"), "down": ("down", "▼ Down"), "steady": ("steady", "● Steady"), "rework": ("rework", "✦ Rework")}
+TREND_TAG = {"up": ("up", "▲ Up"), "down": ("down", "▼ Down"), "steady": ("steady", "● Steady"), "rework": ("rework", "✦ New"), "new": ("rework", "✦ New")}
 TIER_ORDER = ["S", "A", "B", "C", "X"]
 
 # ---------- HTML ----------
@@ -64,10 +64,10 @@ def builds_html(builds):
 
 
 LEGEND = '''  <div class="legend">
-    <span><span class="tag up">▲ Up</span> better than in 7.41f</span>
-    <span><span class="tag down">▼ Down</span> worse than in 7.41f</span>
-    <span><span class="tag steady">● Steady</span> small or offsetting changes</span>
-    <span><span class="tag rework">✦ Rework</span> needs testing before ranked</span>
+    <span><span class="tag up">▲ Up</span> moved up since the day-one list</span>
+    <span><span class="tag down">▼ Down</span> moved down</span>
+    <span><span class="tag steady">● Steady</span> same tier</span>
+    <span><span class="tag rework">✦ New</span> added to the list</span>
   </div>'''
 
 
@@ -91,9 +91,7 @@ for h, paras, bullets, foryou in D.SYSTEMS:
     block += f'      <p class="foryou">{e(foryou)}</p>\n    </div>'
     sys_html.append(block)
 
-LEDE = ("A day-one read of 7.42 for pos 4 and pos 5, written for a core player who fills support. The tiers start from where each hero "
-        "stood at the end of 7.41f in high-MMR pubs, then move up or down based on what the 7.42 notes changed. Real 7.42 win rates "
-        "need a few days of games, so check the stats again by the weekend.")
+LEDE = D.LEDE
 
 page = f'''<!DOCTYPE html>
 <html lang="en">
@@ -110,12 +108,11 @@ page = f'''<!DOCTYPE html>
 
 <header class="top">
   <div class="wrap">
-    <div class="kicker">Patch 7.41f to 7.42 · Support roles</div>
+    <div class="kicker">Patch 7.42 · Support roles · Updated with 7.42 data</div>
     <h1>Patch 7.42 Support Tier List</h1>
     <p class="lede">{e(LEDE)}</p>
     <div class="chips">
-      <span class="chip">7.42 released Nov 18, 2026</span>
-      <span class="chip">7.41f baseline: Dota2ProTracker, 7000+ MMR, last 8 days</span>
+{chr(10).join(f'      <span class="chip">{e(c)}</span>' for c in D.CHIPS)}
       <span class="chip">Focus: pos 4 and pos 5</span>
       <a class="chip" href="{e(core_link)}">Core tier list (pos 1–3)</a>
     </div>
@@ -152,7 +149,7 @@ page = f'''<!DOCTYPE html>
 
 <section id="pos4">
   <h2>Position 4</h2>
-  <p class="sub">Soft support and roamer. Baselines are pos 4 numbers from the last 8 days of 7.41f at 7000+ MMR, with D2PT's 0–100 rating where it had one.</p>
+  <p class="sub">{e(D.SUB4)}</p>
 {LEGEND}
 {board_html(D.POS4)}
 </section>
@@ -165,14 +162,14 @@ page = f'''<!DOCTYPE html>
 
 <section id="pos5">
   <h2>Position 5</h2>
-  <p class="sub">Hard support. Baselines are pos 5 numbers from the same 7.41f window.</p>
+  <p class="sub">{e(D.SUB5)}</p>
 {board_html(D.POS5)}
-  <div class="callout"><b>Test in unranked first:</b> {e(D.CALLOUT)}</div>
+  <div class="callout"><b>{e(D.CALLOUT_LABEL)}</b> {e(D.CALLOUT)}</div>
 </section>
 
 <section id="pos5-builds">
   <h2>Pos 5 builds</h2>
-  <p class="sub">Same format as pos 4. Venomancer, Grimstroke and Ringmaster are also fine at pos 4 with the same builds.</p>
+  <p class="sub">{e(D.SUB5_BUILDS)}</p>
 {builds_html(D.BUILDS5)}
 </section>
 
@@ -206,11 +203,11 @@ page = f'''<!DOCTYPE html>
 
 <footer id="sources">
   <h2 style="color:var(--ink)">Sources and method</h2>
-  <p>7.41f baselines come from Dota2ProTracker's meta page at 7000+ MMR for pos 4 and pos 5 over the last 8 days of 7.41f, read on November 18, 2026 just before 7.42 data replaced it. These are high-MMR numbers, and small samples are noted on each card. Tiers are my reading of the 7.42 notes on top of those baselines, so check them against real 7.42 data once a few days of games are in.</p>
+  <p>{e(D.METHOD)}</p>
   <ul>
     <li><a href="https://www.dota2.com/patches/7.42">Dota 2 patch notes, 7.42</a></li>
     <li><a href="https://www.dota2.com/patches/7.41f">Dota 2 patch notes, 7.41f</a></li>
-    <li><a href="https://dota2protracker.com/meta">Dota2ProTracker meta (7.41f, 7000+ MMR)</a></li>
+    <li><a href="https://dota2protracker.com/meta">Dota2ProTracker meta (7.42, 7000+ MMR)</a></li>
     <li><a href="{e(core_link)}">Patch 7.42 core tier list (pos 1–3)</a></li>
   </ul>
 </footer>
@@ -233,9 +230,9 @@ for b in D.BUILDS4 + D.BUILDS5:
 
 # ---------- README ----------
 TIER_SQ = {"S": "🟥", "A": "🟧", "B": "🟩", "C": "🟦", "X": "⬛"}
-TREND_MD = {"up": "🟢 ▲ Up", "down": "🔴 ▼ Down", "steady": "⚪ ● Steady", "rework": "🟣 ✦ Rework"}
+TREND_MD = {"up": "🟢 ▲ Up", "down": "🔴 ▼ Down", "steady": "⚪ ● Steady", "rework": "🟣 ✦ New", "new": "🟣 ✦ New"}
 md = ["# Patch 7.42 Support Tier List\n", LEDE + "\n",
-      "`7.42 released Nov 18, 2026` `7.41f baseline: Dota2ProTracker, 7000+ MMR, last 8 days` `Focus: pos 4 and pos 5`\n",
+      " ".join(f"`{c}`" for c in D.CHIPS) + " `Focus: pos 4 and pos 5`\n",
       "**Jump to:** [Short version](#the-short-version) · [Pos 4](#position-4) · [Pos 4 builds](#pos-4-builds) · [Pos 5](#position-5) · "
       "[Pos 5 builds](#pos-5-builds) · [Items](#support-items) · [Neutrals](#neutral-items) · [Support changes](#support-changes-in-742) · "
       "[Sources](#sources-and-method) · [Core tier list (pos 1–3)](../README.md)\n",
@@ -248,7 +245,7 @@ md.append(f"> [!TIP]\n> **Filling support?** {D.FILL_NOTE}\n")
 
 def tier_md(title, sub, tiers, img):
     out = [f"## {title}\n", sub + "\n", f"![{title} tier list overview](img/{img})\n",
-           "<sub>🟢 ▲ Up = better than in 7.41f · 🔴 ▼ Down = worse · ⚪ ● Steady = small or offsetting changes · 🟣 ✦ Rework = test before ranked</sub>\n"]
+           "<sub>🟢 ▲ Up = moved up since the day-one list · 🔴 ▼ Down = moved down · ⚪ ● Steady = same tier · 🟣 ✦ New = added to the list</sub>\n"]
     for t in TIER_ORDER:
         if not tiers.get(t):
             continue
@@ -270,11 +267,11 @@ def builds_md(title, sub, builds):
     return out
 
 
-md += tier_md("Position 4", "Soft support and roamer. Baselines are pos 4 numbers from the last 8 days of 7.41f at 7000+ MMR, with D2PT's 0–100 rating where it had one.", D.POS4, "pos4-tiers.svg")
+md += tier_md("Position 4", D.SUB4, D.POS4, "pos4-tiers.svg")
 md += builds_md("Pos 4 builds", D.BUILD_NOTE, D.BUILDS4)
-md += tier_md("Position 5", "Hard support. Baselines are pos 5 numbers from the same 7.41f window.", D.POS5, "pos5-tiers.svg")
-md.append(f"> [!WARNING]\n> **Test in unranked first.** {D.CALLOUT}\n")
-md += builds_md("Pos 5 builds", "Same format as pos 4. Venomancer, Grimstroke and Ringmaster are also fine at pos 4 with the same builds.", D.BUILDS5)
+md += tier_md("Position 5", D.SUB5, D.POS5, "pos5-tiers.svg")
+md.append(f"> [!IMPORTANT]\n> **{D.CALLOUT_LABEL.rstrip(':')}.** {D.CALLOUT}\n")
+md += builds_md("Pos 5 builds", D.SUB5_BUILDS, D.BUILDS5)
 
 md.append("## Support items\n")
 md.append("Two new items are aimed at supports, and most of the save and aura items got cheaper or stronger. Spell amp and cast range items went the other way.\n")
@@ -301,10 +298,10 @@ for h, paras, bullets, foryou in D.SYSTEMS:
     md.append("> [!TIP]\n> " + foryou.replace("For you:", "**For you:**", 1) + "\n")
 
 md.append("## Sources and method\n")
-md.append("7.41f baselines come from Dota2ProTracker's meta page at 7000+ MMR for pos 4 and pos 5 over the last 8 days of 7.41f, read on November 18, 2026 just before 7.42 data replaced it. These are high-MMR numbers, and small samples are noted on each card. Tiers are my reading of the 7.42 notes on top of those baselines, so check them against real 7.42 data once a few days of games are in.\n")
+md.append(D.METHOD + "\n")
 md += ["- [Dota 2 patch notes, 7.42](https://www.dota2.com/patches/7.42)",
        "- [Dota 2 patch notes, 7.41f](https://www.dota2.com/patches/7.41f)",
-       "- [Dota2ProTracker meta (7.41f, 7000+ MMR)](https://dota2protracker.com/meta)",
+       "- [Dota2ProTracker meta (7.42, 7000+ MMR)](https://dota2protracker.com/meta)",
        "- [Patch 7.42 core tier list (pos 1–3)](../README.md)", ""]
 open(os.path.join(out_dir, "README.md"), "w", encoding="utf-8").write(re.sub(r"\n{3,}", "\n\n", "\n".join(md)))
 print("ok")

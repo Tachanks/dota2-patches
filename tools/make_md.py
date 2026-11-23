@@ -196,7 +196,7 @@ def txt(el):
 
 
 TIER_SQ = {"S": "🟥", "A": "🟧", "B": "🟩", "C": "🟦", "X": "⬛"}
-TREND = {"up": "🟢 ▲ Up", "down": "🔴 ▼ Down", "steady": "⚪ ● Steady", "rework": "🟣 ✦ Rework"}
+TREND = {"up": "🟢 ▲ Up", "down": "🔴 ▼ Down", "steady": "⚪ ● Steady", "rework": "🟣 ✦ New"}
 
 md = []
 md.append(f"# {txt(soup.h1)}\n")
@@ -224,7 +224,7 @@ def tier_section(sec_id, img):
     sec = soup.select_one(f"#{sec_id}")
     out = [f"## {txt(sec.h2)}\n", txt(sec.select_one(".sub")) + "\n",
            f"![{txt(sec.h2)} tier list overview](img/{img})\n",
-           "<sub>🟢 ▲ Up = better than in 7.41f · 🔴 ▼ Down = worse · ⚪ ● Steady = small or offsetting changes · 🟣 ✦ Rework = test before ranked</sub>\n"]
+           "<sub>🟢 ▲ Up = moved up since the day-one list · 🔴 ▼ Down = moved down · ⚪ ● Steady = same tier · 🟣 ✦ New = added to the list</sub>\n"]
     for tier in sec.select(".tier"):
         letter = [c for c in tier["class"] if c != "tier"][0]
         heading = "Avoid" if letter == "X" else f"{letter} tier"
@@ -235,8 +235,9 @@ def tier_section(sec_id, img):
         out.append("")
     co = sec.select_one(".callout")
     if co:
-        body = txt(co).replace("Test in unranked first:", "").strip()
-        out.append(f"> [!WARNING]\n> **Test in unranked first.** {body}\n")
+        label = txt(co.find("b")) if co.find("b") else ""
+        body = txt(co)[len(label):].strip()
+        out.append(f"> [!IMPORTANT]\n> **{label.rstrip(':')}.** {body}\n")
     return out
 
 

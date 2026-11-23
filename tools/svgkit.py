@@ -96,7 +96,7 @@ def tier_board_svg(rows, title):
     # legend
     lx = 4
     ly = y + 12
-    for kind, label in (("up", "Up"), ("down", "Down"), ("steady", "Steady"), ("rework", "Rework")):
+    for kind, label in (("up", "Up"), ("down", "Down"), ("steady", "Steady"), ("rework", "New")):
         parts.append(trend_shape(kind, lx + 7, ly))
         parts.append(f'<text class="muted" x="{lx+20}" y="{ly}" font-size="13" dominant-baseline="central">{label}</text>')
         lx += 20 + tw(label, 13) + 22
